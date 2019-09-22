@@ -53,7 +53,7 @@ NSRunLoopMode 在官方文档中提到的有五个:
 其中公开暴露出来的只有 NSDefaultRunLoopMode 和 NSRunLoopCommonModes ，在这里面 NSRunLoopCommonModes 实际上包含了 NSDefaultRunLoopMode 和 NSEventTrackingRunLoopMode，在需要追踪包括scrollview滚动等事件的时候最好使用 NSRunLoopCommonModes
 
 
-### Runloop 的实际应用
+## Runloop 的实际应用
 
 首先，我们可以在viewcontroller中的touchbegin方法打断点，看一下该方法的调用栈
 
@@ -92,7 +92,7 @@ NSRunLoopMode 在官方文档中提到的有五个:
 
 其实这就是一个点击的事件触发了，通过runloop传递的例子，实际上所有的事件都会通过这个方法调用，最后触发到我们编写的代码, 理解了这个我们接下来看看具体的应用。
 
-#### NSTimer
+### NSTimer
 
 在controller中添加一个timer
 
@@ -120,7 +120,7 @@ NSRunLoopMode 在官方文档中提到的有五个:
 @end
 ```
 
-#### 处理耗时逻辑
+### 处理耗时逻辑
 
 在后台进程处理逻辑，完成后通过modes避免在滑动视图的时候返回
 
@@ -141,7 +141,7 @@ NSRunLoopMode 在官方文档中提到的有五个:
 }
 ```
 
-#### 自定义后台线程
+### 自定义后台线程
 
 有时我们想把一些逻辑全部放到自定义的线程中去处理，下面给出一个解决方案。
 
@@ -175,6 +175,7 @@ NSRunLoopMode 在官方文档中提到的有五个:
 - (NSThread *)thread {
     if (!_thread) {
         _thread = [[NSThread alloc] initWithTarget:self selector:@selector(selfThread) object:nil];
+      	[_thread start];
     }
     return _thread;
 }
@@ -216,3 +217,5 @@ NSRunLoopMode 在官方文档中提到的有五个:
 现在我们就可以把需要执行的业务逻辑放入自定义的线程中执行了
 
 还有其他许多实际的应用，比如优化空闲状体的利用、集合视图的优化等等，这里就不多叙述了
+
+1. 
